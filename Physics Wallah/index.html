@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        .closeIT {
+            padding: 5px;
+            background: Red;
+            color: white;
+            float: right;
+            cursor: pointer
+        }
+        
+        #showModelB4Del {
+            padding: 10px 50px!important;
+            max-width: 500px;
+            max-height: 300px;
+            background: #edebee;
+            color: black;
+            border: 5px solid black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            z-index: 99999999999999999999999999999;
+        }
+        
+        .closeIT {
+            padding: 0.3rem 0.5rem;
+            border-radius: 7px;
+            background: red;
+            color: white;
+            position: absolute;
+            top: 0px;
+            right: 2px;
+            cursor: pointer;
+        }
+        
+        
+        
+        .closModalMsg {
+            position: absolute;
+            top: 0%;
+            right: 0%;
+            padding: 5px 10px;
+            color: white;
+            background: red;
+            cursor: pointer;
+        }
+        
+        .b4Remove {
+            transform: translateX(600px);
+            opacity: 0.3;
+            background: black!important;
+        }
+        
+        .addedFile {
+            position: relative;
+            transition: 0.5s;
+        }
+    </style>
+</head>
+
+
+
+<body>
+
+
+    <h1>Choose file and display its Name</h1>
+    <input type='file' id='inputTypeFile' webkitdirectory="true" multiple/>
+
+    <div id="showFilessList"></div>
+
+
+
+    <!-- modal for edit remark -->
+    <div id="showModelB4Del" class="px-2 py-2">
+        <h4>Are You Sure, You want to delete.</h4>
+        <div class="d-flex">
+            <a href="javascript:void(0)" id="yesDelContact" class="btn btn-success mr-3">Yes</a>
+            <!-- <a href="javascript:void(0)" id='NoDelContact' class="btn btn-danger">No</a> -->
+        </div>
+        <span class="closModalMsg" id='closModalMsg'>X</span>
+    </div>
+
+    <script>
+        inputTypeFile = document.getElementById('inputTypeFile')
+        showFilessList = document.getElementById('showFilessList')
+        conputed = ''
+        inputTypeFile.addEventListener('change', function() {
+            if ((this.files.item(i).size * 0.000001).toFixed(2) == 0.00) {
+                computed = this.files.item(i).size + " KB"
+            } else {
+
+                computed = (this.files.item(i).size * 0.000001).toFixed(2) + " MB"
+            }
+
+            if (this.files.length > 0) {
+                if (this.files.length > 0) {
+                    for (var i = 0; i < this.files.length; i++) {
+                        showFilessList.innerHTML += "<p class='addedFile'><b>File Name </b>" + this.files.item(i).name + "  <b>Size </b> " + computed + "<span class='closeIT'>X</span></p>"
+                    }
+                }
+            }
+            closeIT = document.getElementsByClassName('closeIT')
+            arrayFormCloseBtn = [...closeIT];
+            arrayFormCloseBtn.forEach((onebyone) => {
+                onebyone.addEventListener('click', function(e) {
+                    document.getElementById('showModelB4Del').style.display = 'flex';
+                    document.addEventListener('click', function(e) {
+                        if (e.target.classList[0] == 'closeIT') {
+                            closeIT = e.target;
+                            document.getElementById('showModelB4Del').style.display = 'flex';
+                            showModelB4Del.addEventListener('click', function(e) {
+                                if (e.target.id == 'yesDelContact') {
+                                    closeIT.parentElement.classList.add('b4Remove')
+                                    closeIT.parentElement.addEventListener('transitionend', function() {
+                                        closeIT.parentElement.remove();
+                                        inputTypeFile.value = ''
+                                        document.getElementById('uploadFile').style.display = 'block';
+                                        document.getElementById('uploadedFileList').style.display = 'none';
+                                    })
+                                    document.getElementById('showModelB4Del').style.display = 'none';
+                                } else if (e.target.id == 'closModalMsg') {
+                                    document.getElementById('showModelB4Del').style.display = 'none';
+                                }
+                            })
+
+                        }
+
+                    })
+
+                })
+            })
+
+
+        })
+    </script>
+
+</body>
+
+</html>
